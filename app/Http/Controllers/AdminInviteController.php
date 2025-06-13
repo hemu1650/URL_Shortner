@@ -10,51 +10,12 @@ use App\Models\ShortUrl;
 use Illuminate\Support\Facades\Response;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
 
 class AdminInviteController extends Controller
 {
-
-    // public function superadminDashboard()
-    // {
-        
-    //     // Paginate admins (clients)
-    //     $adminUsers = \App\Models\User::where('role', 'admin')
-    //         ->with(['users' => function ($q) {
-    //             $q->withCount('shortUrls')->withSum('shortUrls', 'hits');
-    //         }])
-    //         ->paginate(10); // Add pagination here
-
-    //     // Transform paginated data to add calculated fields
-    //     $clients = $adminUsers->getCollection()->map(function ($admin) {
-    //         $totalUrls = $admin->users->sum('short_urls_count');
-    //         $totalHits = $admin->users->sum('short_urls_sum_hits');
-    //         return (object)[
-    //             'company_name' => $admin->company_name ?? $admin->name,
-    //             'email' => $admin->email,
-    //             'members_count' => $admin->users->count(),
-    //             'total_urls' => $totalUrls,
-    //             'total_hits' => $totalHits,
-    //         ];
-    //     });
-
-    //     // Replace the original collection with the mapped one
-    //     $clientsPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
-    //         $clients,
-    //         $adminUsers->total(),
-    //         $adminUsers->perPage(),
-    //         $adminUsers->currentPage(),
-    //         [
-    //             'path' => request()->url(),
-    //             'query' => request()->query(),
-    //         ]
-    //     );
-
-    //     // URLs for latest short URLs section
-    //     $urls = \App\Models\ShortUrl::with('user')->latest()->paginate(10);
-
-    //     return view('superadmin.superadmin', compact('clientsPaginated', 'urls'));
-    // }
 
     public function superadminDashboard()
     {
@@ -107,21 +68,24 @@ class AdminInviteController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
             'company_name' => 'required'
         ]);
 
         $company = Company::create(['name' => $request->company_name]);
 
-        User::create([
+        // Create user with a random temp password
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => bcrypt(Str::random(10)), // Temporary password
             'role' => 'admin',
             'company_id' => $company->id,
         ]);
 
-        return redirect()->back()->with('success', 'Admin invited successfully.');
+        // Send password reset link
+        Password::sendResetLink(['email' => $user->email]);
+
+        return redirect()->back()->with('success', 'Admin invited successfully. A password setup link has been sent to their email.');
     }
 
     public function exportCsv(Request $request)
@@ -188,29 +152,6 @@ class AdminInviteController extends Controller
             'Content-Disposition' => "attachment; filename=\"$filename\"",
         ]);
     }
-
-    // public function clientList()
-    // {
-    //     $clients = \App\Models\User::where('role', 'admin')
-    //         ->with(['users.shortUrls']) // Load users and their shortUrls
-    //         ->paginate(15);
-
-    //     // Post-process to calculate totals
-    //     $clients->getCollection()->transform(function ($admin) {
-    //         $members = $admin->users ?? collect();
-
-    //         $totalUrls = $members->sum(fn($user) => $user->shortUrls->count());
-    //         $totalHits = $members->sum(fn($user) => $user->shortUrls->sum('hits'));
-
-    //         $admin->members_count = $members->count();
-    //         $admin->total_urls = $totalUrls;
-    //         $admin->total_hits = $totalHits;
-
-    //         return $admin;
-    //     });
-
-    //     return view('superadmin.clients.index', compact('clients'));
-    // }
 
     public function clientList()
     {
@@ -310,4 +251,3 @@ class AdminInviteController extends Controller
 
 
 }
-

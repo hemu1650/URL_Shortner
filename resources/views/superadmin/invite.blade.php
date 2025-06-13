@@ -33,14 +33,14 @@
                         @enderror
                     </div>
 
-                    <div class="mb-4">
+                    {{-- <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700">Password</label>
                         <input type="password" name="password" required
                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-200 focus:border-indigo-500">
                         @error('password')
                             <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700">Company Name</label>

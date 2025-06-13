@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\ShortUrl;
 use Illuminate\Support\Facades\Response;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 class CompanyUserInviteController extends Controller
 {
     /**
@@ -51,7 +52,7 @@ class CompanyUserInviteController extends Controller
     }
 
 
-    
+
     public function membersList()
     {
         if (Auth::user()->role === 'superadmin') {
@@ -110,23 +111,26 @@ class CompanyUserInviteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-            'role'     => 'required|in:admin,member',
+            'name'  => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'role'  => 'required|in:admin,member',
         ]);
 
         $admin = Auth::user();
 
-        User::create([
+        // Create user with a temporary password
+        $user = User::create([
             'name'       => $request->name,
             'email'      => $request->email,
-            'password'   => bcrypt($request->password),
-            'role'       => $request->role,  // Now using dropdown role
+            'password'   => bcrypt(Str::random(10)), // Temporary password
+            'role'       => $request->role,
             'company_id' => $admin->company_id,
         ]);
 
-        return redirect()->back()->with('success', 'User invited successfully as ' . ucfirst($request->role) . '.');
+        // Send password reset link
+        Password::sendResetLink(['email' => $user->email]);
+
+        return redirect()->back()->with('success', 'User invited successfully as ' . ucfirst($request->role) . '. A password setup link has been sent to their email.');
     }
 
 
