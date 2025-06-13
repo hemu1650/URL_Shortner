@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jun 13, 2025 at 06:15 AM
+-- Generation Time: Jun 13, 2025 at 06:46 AM
 -- Server version: 8.2.0
 -- PHP Version: 8.2.13
 
@@ -276,7 +276,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role`, `company_id`) VALUES
-(1, 'Super Admin', 'superadmin@gmail.com', NULL, '$2y$12$43U1KlMaswJW8jA3.zANje6TaSFG/aHIYdxiqP7XkRDEQiuXQfaC2', 'aXOoudxeX2xzNt08l67SibtZdT0lHZ6fAf8ARSvcHunwSRidcVQBIvo846yc', '2025-06-11 09:33:15', '2025-06-11 09:33:15', 'superadmin', NULL),
+(1, 'Super Admin', 'superadmin@example.com', NULL, '$2y$12$43U1KlMaswJW8jA3.zANje6TaSFG/aHIYdxiqP7XkRDEQiuXQfaC2', 'aXOoudxeX2xzNt08l67SibtZdT0lHZ6fAf8ARSvcHunwSRidcVQBIvo846yc', '2025-06-11 09:33:15', '2025-06-11 09:33:15', 'superadmin', NULL),
 (15, 'admin3', 'admin3@example.com', NULL, '$2y$12$HiZXWRVivAparpoMGCQSsuc8.txfM.zMXP5ex/zKiOymZynkygpYW', NULL, '2025-06-12 04:42:40', '2025-06-12 04:42:40', 'admin', 8),
 (11, 'John Doe', 'admin@gmail.com', NULL, '$2y$12$EB8tP/C2MdUQ1gDIttAcsOOQdEPC1rPXICeYbdkYaaNfAJHlr1NDK', 'JILOn1ekF8156pgtOH7IX5mWHAMwTtqH22NOPasHbASAn0in9qOXGPS9MjSD', '2025-06-11 10:49:42', '2025-06-11 10:49:42', 'admin', 5),
 (12, 'member1', 'deepti@gmail.com', NULL, '$2y$12$bgoRW6iFtfQGFQrG0g2Mnu.8j4H7Y8nIswI1pEW29ITKsZnA6YJIm', 'gn9TX8vVKH3Y3HDEzoYtmhrQRAniseiOhWTe1DuPW50Nx0FCywFAPEt1ojiX', '2025-06-11 10:53:34', '2025-06-11 10:53:34', 'member', 5),
