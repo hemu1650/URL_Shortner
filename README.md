@@ -85,3 +85,6 @@ php artisan serve
 ### Default SuperAdmin Credentials
 Email: superadmin@example.com
 Password: password
+
+# Example view Link
+https://docs.google.com/document/d/1J87PKrKbKNqsfdKDKV2A9oY-O4PM9dO-j5cXDqyanUM/edit?usp=sharing
